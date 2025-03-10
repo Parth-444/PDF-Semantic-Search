@@ -34,7 +34,7 @@ def chunk_by_words(texts,  chunk_size=100, overlap=20):
 
     return chunks
 
-result_text = extract_text_from_pdf('resume.pdf')
+result_text = extract_text_from_pdf('Python Cheat Sheet - The Basics Coursera.pdf')
 chunk_list = chunk_by_words(result_text)
 embeddings = model.encode(chunk_list)
 print(embeddings)
