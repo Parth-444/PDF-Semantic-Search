@@ -1,70 +1,91 @@
-# PDF Semantic Search using FAISS and Sentence Transformers
+# Semantic Search in PDFs Using FAISS
 
 ## Overview
-This project implements a **semantic search engine** for extracting relevant information from a PDF document using **FAISS (Facebook AI Similarity Search)** and **Sentence Transformers**. The application is built with **Flask** to provide a web interface where users can enter queries and retrieve the most relevant text chunks from the uploaded PDF.
+This project is a command-line tool that allows users to perform semantic search on text extracted from PDF files. It uses FAISS (Facebook AI Similarity Search) for efficient vector search and SentenceTransformers for generating embeddings. The system is modular, making it easy to maintain and extend.
 
 ## Features
 - Extracts text from a PDF file
-- Splits text into overlapping word chunks for better context
-- Encodes chunks using **Sentence Transformers**
-- Indexes and searches the text chunks using **FAISS**
-- Provides a web interface for searching text within the PDF
-
-## Project Structure
-```plaintext
-project-folder/
-│── main.py                
-│── Python Cheat Sheet - The Basics Coursera.pdf  # Sample PDF file
-│── templates/
-│   └── index.html         # Frontend HTML template
-│── requirements.txt       # Dependencies
-│── README.md              # Project documentation
-```
+- Splits the text into overlapping chunks
+- Uses FAISS for fast similarity search
+- Returns search results in JSON format
+- CLI-based interface with modular design
 
 ## Installation
-### 1. Clone the Repository
+
+### Prerequisites
+Ensure you have Python installed (Python 3.7 or higher is recommended). Install the required dependencies using:
+
 ```sh
-git clone <repo-link>
-cd project-folder
+pip install numpy faiss-cpu sentence-transformers pypdf2
 ```
 
-### 2. Create a Virtual Environment (Optional but Recommended)
-```sh
-python -m venv venv
-source venv/bin/activate  # On macOS/Linux
-venv\Scripts\activate     # On Windows
+## Project Structure
 ```
-
-### 3. Install Dependencies
-```sh
-pip install -r requirements.txt
+semantic_search_project/
+│── main.py                  # Entry point for CLI-based search
+│── search_engine/
+│   ├── __init__.py          # Package initializer
+│   ├── pdf_processor.py     # Extracts text from PDF
+│   ├── text_chunker.py      # Splits text into chunks
+│   ├── faiss_indexer.py     # Handles FAISS indexing & searching
+│   ├── search_service.py    # Manages the search process
 ```
 
 ## Usage
-### 1. Run the Flask App
+
+### Running the Program
+To start the CLI tool, run:
 ```sh
-python app.py
+python main.py
 ```
-The application will start on **http://127.0.0.1:5000/**
 
-### 2. Search for Keywords
-- Open your browser and go to **http://127.0.0.1:5000/**
-- Enter a search query in the input field and submit
-- View relevant results with surrounding context
+### Example Interaction
+```
+Enter PDF file path: sample.pdf
+Processing the PDF file...
 
-## Technologies Used
-- **Python**: Core programming language
-- **Flask**: Web framework for the UI
-- **PyPDF2**: Extract text from PDFs
-- **Sentence Transformers**: Convert text into numerical embeddings
-- **FAISS**: Efficient similarity search for embeddings
-- **NumPy**: Handling arrays and matrices
+Enter your search query (or type 'exit' to quit): lambda function
 
-## Future Improvements
-- Support for uploading custom PDFs
-- Multiple document indexing
-- Improved UI for better usability
+Search Results (JSON Format):
+{
+    "query": "lambda function",
+    "results": [
+        {
+            "chunk": "Python supports lambda functions...",
+            "context": "Python supports lambda functions... and list comprehensions...",
+            "distance": 0.123
+        },
+        {
+            "chunk": "Lambdas are used for anonymous functions...",
+            "context": "Lambdas are used for anonymous functions... in Python programming...",
+            "distance": 0.187
+        }
+    ]
+}
+
+Enter your search query (or type 'exit' to quit): exit
+Exiting program.
+```
+
+## How It Works
+1. **Extract PDF Text**: The `pdf_processor.py` module extracts text from the given PDF file.
+2. **Chunking**: `text_chunker.py` splits the extracted text into overlapping word chunks for better context retention.
+3. **Embedding Generation**: `search_service.py` encodes the text chunks using the `SentenceTransformer` model.
+4. **Indexing and Search**: `faiss_indexer.py` creates a FAISS index and searches for semantically similar text chunks.
+5. **JSON Output**: The search results are displayed in a structured JSON format with relevant context.
+
+## Dependencies
+- Python 3.7+
+- [FAISS](https://github.com/facebookresearch/faiss)
+- [SentenceTransformers](https://www.sbert.net/)
+- [PyPDF2](https://pypi.org/project/PyPDF2/)
+- NumPy
+
+## Customization
+- Modify `chunk_size` and `overlap` in `text_chunker.py` to change chunking behavior.
+- Change the transformer model in `search_service.py` by modifying `model_name`.
+- Adjust the `k` value in `search()` to retrieve more or fewer search results.
 
 ## License
-This project is open-source and available under the MIT License.
+This project is licensed under the MIT License. See the LICENSE file for more details.
 
