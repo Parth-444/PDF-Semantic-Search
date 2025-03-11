@@ -13,7 +13,7 @@ This project implements a **semantic search engine** for extracting relevant inf
 ## Project Structure
 ```plaintext
 project-folder/
-│── app.py                 # Main Flask application
+│── main.py                
 │── Python Cheat Sheet - The Basics Coursera.pdf  # Sample PDF file
 │── templates/
 │   └── index.html         # Frontend HTML template
